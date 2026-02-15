@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adib & Fakhirah | Wedding</title>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Birthstone&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  /*--bg: #faf7f2;*/
+  --bg:#F2EED7;
+  --door-color: #faf7f2;
+  --primary: #5C6F2B;
+  --secondary: #a1866f;
+  --section-light: #EEEEEE;  /* grey */
+  --section-dark:  #5C6F2B;  /* terracotta */
+}
+
+/* Reset */
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family:'Poppins', sans-serif;
+  background:var(--bg);
+  color:#333;
+  overflow-x:hidden;
+}
+
+section {
+  padding:70px 20px;
+  max-width:900px;
+  margin:auto;
+  text-align:center;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-family:'Playfair Display', serif;
+  color:var(--primary);
+}
+
+p { font-size:0.95rem; margin-bottom:10px; }
+
+/* ================= INTRO OVERLAY ================= */
+#introOverlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 9999;
+  overflow: hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+/* ================= DOORS ================= */
+.door {
+  position:absolute;
+  top:0;
+  width:50%;
+  height:100%;
+  background: var(--door-color);
+  transform-origin: center;
+  transition: transform 1.2s ease-in-out, opacity 1s ease;
+  z-index:9999;
+}
+.left-door { left:0; transform-origin: left center; border-right:1px solid #ccc; }
+.right-door { right:0; transform-origin: right center; border-left:1px solid #ccc; }
+.left-door.open { transform: rotateY(-90deg); opacity:0; }
+.right-door.open { transform: rotateY(90deg); opacity:0; }
+
+/* ================= WAX STAMP ================= */
+.circle-wrapper {
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  cursor:pointer;
+  text-align:center;
+  z-index: 10000;
+  transition: transform 0.6s ease, opacity 0.6s ease;
+}
+.circle-wrapper img {
+  width:200px;
+  display:block;
+  animation: floatStamp 3s ease-in-out infinite;
+}
+@keyframes floatStamp {
+  0%,100%{ transform: translateY(0);}
+  50%{ transform: translateY(-6px);}
+}
+.intro-text {
+  margin-top:10px;
+  font-size:13px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--secondary);
+}
+
+/* ================= HERO ================= */
+.hero {
+  position: relative;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  color:white;
+  overflow:hidden;
+  opacity:0;
+  transition: opacity 1s ease;
+}
+
+.hero.show { opacity:1; }
+
+.hero-video video {
+  position:absolute;
+  top:50%;
+  left:50%;
+  min-width:100%;
+  min-height:100%;
+  transform:translate(-50%, -50%);
+  z-index:-1;
+  object-fit:cover;
+}
+
+/* HERO TEXT (UPDATED ONLY HERE) */
+.hero-text {
+  position: relative;
+  z-index:1;
+  opacity:0;
+  transform: translateY(30px);
+  transition: opacity 1s ease, transform 1s ease;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.hero-text.visible {
+  opacity:1;
+  transform: translateY(0);
+}
+
+.hero-label {
+  font-family:'Source Serif 4', serif;
+  font-size:1.1rem;
+  letter-spacing:3px;
+  margin-bottom:30px;
+  color:white;
+}
+
+.hero-names h1 {
+  font-family:'Birthstone', cursive;
+  font-size:4.5rem;
+  line-height:0.95;
+  margin:0;
+  color:white;
+}
+
+.ampersand {
+  font-family:'Playfair Display', serif;
+  font-size:1.6rem;
+  margin:6px 0;
+  color:rgba(255,255,255,0.85);
+}
+
+/* DATE AT BOTTOM */
+.hero-date {
+  position:absolute;
+  bottom:40px;
+  left:50%;
+  transform:translateX(-50%);
+  text-align:center;
+  z-index:1;
+  opacity:0;
+  transition: opacity 1s ease;
+}
+.hero.show .hero-date { opacity:1; }
+
+.hero-date p {
+  font-family:'Source Serif 4', serif;
+  font-size:1.2rem;
+  margin:4px 0;
+  color:white;
+}
+
+/* ================= FADE-IN SECTIONS ================= */
+.fade-in-section {
+  opacity:0;
+  transform:translateY(30px);
+  transition: opacity 1s ease-out, transform 1s ease-out;
+}
+.fade-in-section.visible {
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* ================= DETAILS & RSVP ================= */
+.details p strong { 
+  color: var(--primary); 
+}
+
+.details.section-dark p {
+  color: #ffffff !important;
+}
+
+.details.section-dark p strong {
+  color: #ffffff !important; /* ensure strong/bold is also white */
+}
+
+
+form {
+  max-width:500px;
+  margin:auto;
+  text-align:left;
+}
+
+input,select,textarea,button {
+  width:100%;
+  padding:12px;
+  margin-bottom:15px;
+  border-radius:6px;
+  border:1px solid #ccc;
+  font-family:inherit;
+  font-size:0.9rem;
+}
+
+button {
+  background:var(--primary);
+  color:white;
+  border:none;
+  cursor:pointer;
+  transition:0.3s;
+}
+button:hover { background:var(--secondary); }
+
+footer {
+  padding:40px 20px;
+  font-size:0.85rem;
+  color:#777;
+  text-align:center;
+}
+
+
+
+/* ================= CONTACT US ================= */
+.contact-us {
+  padding-top:50px;
+  padding-bottom:50px;
+}
+
+.contact-us h2 {
+  margin-bottom:20px;
+}
+
+.contact-us p {
+  margin-bottom:10px;
+  font-family:'Source Serif 4', serif;
+  color:#333;
+}
+
+.contact-card {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  margin-bottom:25px;
+}
+
+.contact-card img {
+  width:30px;
+  height:30px;
+  margin-bottom:10px;
+}
+
+.contact-card a {
+  color:var(--primary);
+  text-decoration:none;
+  font-weight:500;
+}
+
+.contact-card a:hover {
+  text-decoration:underline;
+}
+
+/* Mobile tweak */
+@media(max-width:768px){
+  .contact-card img { width:35px; height:35px; }
+}
+
+
+/* ================= COUNTDOWN ================= */
+.countdown {
+  padding:50px 20px;
+}
+
+.countdown h2 {
+  margin-bottom:30px;
+}
+
+.countdown-timer {
+  display:flex;
+  justify-content:center;
+  gap:25px;
+  flex-wrap:wrap;
+}
+
+.time-box {
+  background:var(--primary);
+  color:white;
+  padding:15px 20px;
+  border-radius:10px;
+  min-width:80px;
+}
+
+.time-box span {
+  font-size:2rem;
+  font-weight:bold;
+  display:block;
+  text-align:center;
+}
+
+.time-box p {
+  margin:5px 0 0 0;
+  font-size:0.9rem;
+  text-align:center;
+}
+
+/* Mobile tweak */
+@media(max-width:768px){
+  .countdown-timer {
+    gap:15px;
+  }
+  .time-box {
+    min-width:60px;
+    padding:10px 15px;
+  }
+  .time-box span {
+    font-size:1.5rem;
+  }
+  .time-box p {
+    font-size:0.8rem;
+  }
+}
+
+
+
+/* ================= MAP SECTION ================= */
+.map-section { padding:50px 20px; }
+.map-section h2 { margin-bottom:20px; }
+.map-section p { margin-bottom:20px; font-family:'Source Serif 4', serif; color:#333; }
+.map-container { width:100%; height:400px; border-radius:10px; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
+
+/* Mobile */
+@media(max-width:768px){
+  .map-container { height:300px; }
+}
+
+
+
+
+/* ================= PHOTO GALLERY ================= */
+.photo-gallery {
+  display:flex;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  gap:10px;
+  padding:20px 0;
+}
+.photo-gallery img {
+  flex:0 0 auto;
+  width:250px;
+  height:150px;
+  object-fit:cover;
+  scroll-snap-align:start;
+  border-radius:8px;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+  .circle-wrapper img { width:150px; }
+  .hero-names h1 { font-size:3rem; }
+  .hero-date p { font-size:1rem; }
+}
+
+
+
+/* ================= BOTTOM NAV ================= */
+#bottomNav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:70px;
+  background:rgba(250,247,242,.96);
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  box-shadow:0 -4px 12px rgba(0,0,0,.08);
+  z-index:9998;
+  opacity:0;
+  transform:translateY(100%);
+  transition:.6s ease;
+}
+#bottomNav.show{
+  opacity:1;
+  transform:translateY(0);
+}
+#bottomNav a{
+  font-size:1.6rem;
+  color:var(--primary);
+  text-decoration:none;
+}
+#bottomNav img{width:28px;}
+
+@media(max-width:768px){
+  .hero-names h1{font-size:3rem;}
+  .circle-wrapper img{width:150px;}
+}
+
+
+
+/* ================= GIFT (QR) POPUP BOX ================= */
+.gift-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.gift-modal.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.gift-modal-content {
+  background: #fff;
+  padding: 35px 25px;
+  max-width: 360px;
+  width: 90%;
+  border-radius: 18px;
+  text-align: center;
+  position: relative; /* needed for absolute close button */
+  animation: scaleIn 0.4s ease;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.gift-modal-content h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  margin-bottom: 20px;
+  margin-top:25px;
+  color: var(--primary);
+  line-height: 1.3;
+}
+
+.gift-qr {
+  width: 200px;
+  max-width: 80%;
+  margin: 15px auto 20px;
+  display: block;
+}
+
+.bank-info {
+  font-family: 'Source Serif 4', serif;
+  font-size: 0.9rem;
+  color: #444;
+  line-height: 1.4;
+}
+
+.acc-number {
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  color: var(--primary);
+  display: block;
+  margin-top: 5px;
+}
+
+/* Close button pinned to top-right of popup box */
+.gift-close {
+  position: absolute;       /* pin inside gift-modal-content */
+  top: 12px;
+  right: 12px;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #999;
+  line-height: 1;
+  padding: 0;
+  display: flex;            /* center the × inside square */
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s ease;
+}
+
+.gift-close:hover {
+  color: var(--primary);
+}
+
+/* Responsive tweaks for smaller screens */
+@media(max-width: 480px) {
+  .gift-modal-content {
+    padding: 25px 15px;
+  }
+  .gift-qr {
+    width: 150px;
+  }
+  .gift-close {
+    top: 10px;
+    right: 10px;
+    font-size: 1.5rem;
+  }
+}
+
+
+/* ================= DIFFERENT SECTIONS ================= */
+.section-dark {
+  background: var(--section-dark);
+  color: #fff --primary;
+  padding-top: 100px;
+}
+
+.section-dark h1,
+.section-dark h2,
+.section-dark h3,
+.section-dark h4,
+.section-dark h5,
+.section-dark h6,
+.section-dark p {
+  color: #fff;
+}
+
+.section-light {
+  background: var(--section-light);
+  padding-top: 100px;
+}
+
+
+/* ================= TORN PAPER ================= */
+.torn-divider {
+  width: 100%;
+  height: 90px; /* adjust according to your torn image height */
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;      /* allow overlap */
+  z-index: 1;              /* sit above the next section */
+  margin-bottom: -45px;    /* negative margin to pull next section up */
+}
+
+/* Ensure sections don't hide torn divider */
+section {
+  position: relative;
+  z-index: 0;
+}
+
+
+</style>
+</head>
+
+<body>
+
+<!-- INTRO OVERLAY -->
+<div id="introOverlay">
+  <div class="door left-door"></div>
+  <div class="door right-door"></div>
+
+  <div class="circle-wrapper">
+    <img src="images/fa-khat-stamp.png" alt="Wax Stamp">
+    <div class="intro-text">Tap to enter</div>
+  </div>
+</div>
+
+<!-- BACKGROUND MUSIC -->
+<audio id="bgMusic" loop>
+  <source src="turning_page.mp3" type="audio/mpeg">
+</audio>
+
+<!-- HERO -->
+<section class="hero fade-in-section">
+  <div class="hero-video">
+    <video autoplay muted loop playsinline>
+      <source src="images/first_vid.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <div class="hero-text">
+    <span class="hero-label">MAJLIS BERTANDANG</span>
+    <div class="hero-names">
+      <h1>Adib Aiman</h1>
+      <div class="ampersand">&</div>
+      <h1>Fakhirah</h1>
+    </div>
+  </div>
+
+  <div class="hero-date">
+    <p>3 Mei 2026</p>
+    <p>16 Zulkaedah, 1447H</p>
+  </div>
+</section>
+
+<!-- STORY SECTION (UNCHANGED) -->
+<section class="fade-in-section section-light">
+  <h2 style="padding-bottom:2em;">بِسْــــــــــــــــــمِ اللهِ الرَّحْمَنِ الرَّحِيْمِ</h2>
+
+  <h4>ARSHAD BIN MAT ISA @ RAMLI</h4>
+  <p>dan</p>
+  <h4>ROHAYA BINTI AHMAD RAMLLY</h4>
+
+  <p>
+    dengan penuh rasa hormat dan berbesar hati ingin menjemput
+    Dato’ Seri/ Datin Seri/ Dato’/ Datin/ Tuan/ Puan/ Encik/ Cik
+    dan pasangan ke majlis walimatulurus puteri kesayangan kami
+  </p>
+
+  <h4 style="margin-top:20px;">MUHAMMAD ADIB AIMAN BIN ARSHAD</h4>
+  <p>dan pilihan hatinya</p>
+  <h4>NIK NURULFAKHIRAH BINTI SHAMSUL ZUHAIRI</h4>
+
+  <h5 style="margin-top:25px;">TEMPAT</h5>
+  <p>Aireka Space<br>Empire Damansara, E-01-B3, NO. 2, Jalan PJU 8/8A, 
+    Damansara Perdana, 47820 Petaling Jaya, Selangor</p>
+
+  <h5>TARIKH</h5>
+  <p>Ahad, 3 Mei 2026<br>16 Zulkaedah 1447H</p>
+
+  <h5>WAKTU</h5>
+  <p>11.00 pagi – 3.30 petang</p>
+</section>
+
+<!-- Torn Divider (light to dark) -->
+<div class="torn-divider" style="background-image: url('images/index2-torn-light.png');"></div>
+
+
+<!-- DETAILS -->
+<section class="details fade-in-section section-dark">
+  <h2 style="padding-bottom:2em;">ATUR CARA MAJLIS</h2>
+  <p><strong>11.00 AM:</strong> Jamuan makan</p>
+  <p><strong>12.30 PM:</strong> Ketibaan pengantin</p>
+  <p><strong>1.30 PM:</strong> Makan Beradab</p>
+  <p><strong>2.00 PM:</strong> Sesi Fotografi</p>
+  <p><strong>3.30 PM</strong> Majlis tamat</p>
+</section>
+
+<!-- Torn Divider (dark to light) -->
+<div class="torn-divider" style="background-image: url('images/index2-torn-dark.png');"></div>
+
+
+<!-- COUNTDOWN -->
+<section class="fade-in-section countdown section-light">
+  <h2>Countdown:</h2>
+  <div class="countdown-timer">
+    <div class="time-box">
+      <span id="days">0</span>
+      <p>Days</p>
+    </div>
+    <div class="time-box">
+      <span id="hours">0</span>
+      <p>Hours</p>
+    </div>
+    <div class="time-box">
+      <span id="minutes">0</span>
+      <p>Minutes</p>
+    </div>
+    <div class="time-box">
+      <span id="seconds">0</span>
+      <p>Seconds</p>
+    </div>
+  </div>
+</section>
+<!-- Torn Divider (light to dark) -->
+<div class="torn-divider" style="background-image: url('images/index2-torn-light.png');"></div>
+
+
+<!-- PHOTOS -->
+<section class="fade-in-section section-dark">
+  <div class="photo-gallery">
+    <img src="images/sec_pic.jpeg">
+    <img src="images/third_pic.jpg">
+    <img src="images/fourth_pic.jpg">
+    <img src="images/sec_pic.jpeg">
+    <img src="images/fourth_pic.jpg">
+  </div>
+
+  <h3>يا الله يا رحمن يا رحيم</h3>
+  <p style="margin-top:20px;">
+    Berkatilah majlis perkahwinan di antara dua hambamu ini.
+    Limpahkanlah baraqah dan rahmatMu kepada kedua mempelai ini.
+    Kurniakanlah mereka kelak zuriat yang soleh dan solehah.
+    Kekalkanlah jodoh mereka hingga ke jannah.
+  </p>
+</section>
+<!-- Torn Divider (dark to light) -->
+<div class="torn-divider" style="background-image: url('images/index2-torn-dark.png');"></div>
+
+
+
+<!-- RSVP -->
+<section class="fade-in-section section-light">
+  <h2>RSVP</h2>
+  <p>Sila RSVP kehadiran anda sebelum 20 April 2026</p>
+
+  <form>
+    <input type="text" placeholder="Nama" required>
+    <input type="tel" placeholder="No. Telefon" required>
+
+    <select required>
+      <option value="">Adakah anda akan menghadiri?</option>
+      <option value="Yes">Yes</option>
+      <option value="No">No</option>
+    </select>
+
+    <select>
+      <option value="">Bilangan kehadiran</option>
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+      <option>4</option>
+    </select>
+
+    <button type="submit">Hantar</button>
+  </form>
+</section>
+<!-- Torn Divider (light to dark) -->
+<div class="torn-divider" style="background-image: url('images/index2-torn-light.png');"></div>
+
+
+<!-- MAP LOCATION -->
+<section class="fade-in-section map-section section-dark">
+  <h2>Lokasi Majlis</h2>
+  <p>Aireka Space, Empire Damansara, Selangor</p>
+  <div class="map-container">
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3983.7267274806322!2d101.60999407371601!3d3.1665166530482636!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cc4ff12ab427ff%3A0x5acf586ef4db4daf!2sAIREKA%20SPACE!5e0!3m2!1sen!2smy!4v1771166710557!5m2!1sen!2smy" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
+</section>
+<!-- Torn Divider (dark to light) -->
+<div class="torn-divider" style="background-image: url('images/index2-torn-dark.png');"></div>
+
+
+
+<!-- CONTACT US -->
+<section id="contact" class="fade-in-section contact-us section-light">
+  <h2>Hubungi Kami</h2>
+  <p>Sekiranya anda mempunyai sebarang pertanyaan, sila hubungi ahli keluarga kami.</p>
+
+  <div class="contact-card">
+    <img src="images/wa_icon.png" alt="WhatsApp Icon">
+    <p><strong>Nik Muhammad Irfan</strong><br>
+       <a href="https://wa.me/60123456789" target="_blank">+60 12-345 6789</a>
+    </p>
+  </div>
+
+  <div class="contact-card">
+    <img src="images/wa_icon.png" alt="WhatsApp Icon">
+    <p><strong>Nik Muhammad Izzat</strong><br>
+       <a href="https://wa.me/60123456780" target="_blank">+60 12-345 6780</a>
+    </p>
+  </div>
+</section>
+<!-- Torn Divider (dark to light) -->
+<div class="torn-divider" style="background-image: url('images/torn-dark.png');"></div>
+
+
+
+<footer class="fade-in-section section-dark" style="padding-top:90px;">
+  <p>"Dan daripada segala sesuatu, Kami ciptakan berpasang-pasangan, 
+    supaya kamu mengambil pengajaran" (Surah Adz-Dzariyat, ayat 49)</p>
+</footer>
+
+
+
+<!-- BOTTOM NAV -->
+<nav id="bottomNav">
+  <a href="#contact"><img src="images/call_icon.png"></a>
+  <a href="#" id="giftBtn"><img src="images/gift_icon.png"></a>
+  <a href="#location"><img src="images/location_icon.png"></a>
+</nav>
+
+
+<!-- GIFT POPUP -->
+<div id="giftModal" class="gift-modal">
+  <div class="gift-modal-content">
+    <button class="gift-close">&times;</button>
+
+    <h3>We accept your gift for us to start our new life with open heart</h3>
+
+    <img src="images/UOB_QR.PNG" alt="Gift QR Code" class="gift-qr">
+
+    <p class="bank-info">
+      <strong>Bank:</strong>UOB (United Overseas Bank)<br>
+      <strong>Name:</strong> Nik Nurulfakhirah Shamsul Z.<br>
+      <strong>Account Number:</strong><br>
+      <span class="acc-number">910-363-517-5</span>
+    </p>
+  </div>
+</div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const stamp = document.querySelector(".circle-wrapper");
+  const leftDoor = document.querySelector(".left-door");
+  const rightDoor = document.querySelector(".right-door");
+  const intro = document.getElementById("introOverlay");
+  const hero = document.querySelector(".hero");
+  const heroText = document.querySelector(".hero-text");
+  const music = document.getElementById("bgMusic");
+  const nav=document.getElementById("bottomNav");
+
+  stamp.addEventListener("click", () => {
+    music.play().catch(()=>{});
+    stamp.style.opacity="0";
+    leftDoor.classList.add("open");
+    rightDoor.classList.add("open");
+
+    setTimeout(()=>{
+      hero.classList.add("show");
+      heroText.classList.add("visible");
+      intro.style.display="none";
+    },1200);
+  });
+
+  const observer = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){ entry.target.classList.add("visible"); }
+    });
+  }, {threshold:0.2});
+
+  document.querySelectorAll(".fade-in-section").forEach(el=>observer.observe(el));
+});
+
+
+// Bottom Nav
+let lastScrollY = window.scrollY;
+const nav = document.getElementById("bottomNav");
+
+window.addEventListener("scroll", () => {
+  const currentScrollY = window.scrollY;
+
+  if (currentScrollY > 200) {
+    if (currentScrollY > lastScrollY) {
+      nav.classList.add("show");   // scrolling down
+    } else {
+      nav.classList.remove("show"); // scrolling up
+    }
+  } else {
+    nav.classList.remove("show");   // near top
+  }
+
+  lastScrollY = currentScrollY;
+});
+
+
+// Gift POPUP box logic
+const giftBtn = document.getElementById("giftBtn");
+const giftModal = document.getElementById("giftModal");
+const giftClose = document.querySelector(".gift-close");
+
+giftBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  giftModal.classList.add("show");
+});
+
+giftClose.addEventListener("click", () => {
+  giftModal.classList.remove("show");
+});
+
+// Close when clicking outside the box
+giftModal.addEventListener("click", (e) => {
+  if (e.target === giftModal) {
+    giftModal.classList.remove("show");
+  }
+});
+
+
+// Countdown timer
+function updateCountdown() {
+  const weddingDate = new Date("May 2, 2026 00:00:00").getTime();
+  const now = new Date().getTime();
+  const distance = weddingDate - now;
+
+  if(distance < 0) return; // Stop if date passed
+
+  const days = Math.floor(distance / (1000*60*60*24));
+  const hours = Math.floor((distance % (1000*60*60*24)) / (1000*60*60));
+  const minutes = Math.floor((distance % (1000*60*60)) / (1000*60));
+  const seconds = Math.floor((distance % (1000*60)) / 1000);
+
+  document.getElementById("days").innerText = days;
+  document.getElementById("hours").innerText = hours;
+  document.getElementById("minutes").innerText = minutes;
+  document.getElementById("seconds").innerText = seconds;
+}
+
+// Update every second
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+</script>
+
+</body>
+</html>
