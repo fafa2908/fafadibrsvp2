@@ -14,7 +14,7 @@
 :root {
   --bg:#F2EED7;
   --door-color: #faf7f2;
-  --primary: #586F52;
+  --primary: #84934A;
   --secondary: #a1866f;
   --section-light: #EEEEEE;  /* grey */
   --section-dark:  #586F52;  /* terracotta */
@@ -360,7 +360,7 @@ footer {
 
 
 /* ================= PHOTO GALLERY ================= */
-.photo-gallery {
+/*.photo-gallery {
   display:flex;
   overflow-x:auto;
   scroll-snap-type:x mandatory;
@@ -374,7 +374,38 @@ footer {
   object-fit:cover;
   scroll-snap-align:start;
   border-radius:8px;
+}*/
+
+
+
+
+.photo-gallery {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  overflow: hidden;
+  position: relative;
 }
+
+.photo-gallery img {
+  width: 180px;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 12px;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  opacity: 0.6;
+}
+
+.photo-gallery img.active {
+  width: 260px;
+  height: 340px;
+  opacity: 1;
+  transform: scale(1.05);
+  z-index: 2;
+}
+
+
 
 /* MOBILE */
 @media(max-width:768px){
@@ -666,6 +697,7 @@ section {
     <img src="images/sec_pic.jpeg">
     <img src="images/fourth_pic.jpg">
   </div>
+  
 
   <h3>يا الله يا رحمن يا رحيم</h3>
   <p style="margin-top:20px;">
@@ -730,15 +762,15 @@ section {
 
   <div class="contact-card">
     <img src="images/wa_icon.png" alt="WhatsApp Icon">
-    <p><strong>Nik Muhammad Irfan</strong><br>
-       <a href="https://wa.me/60123456789" target="_blank">+60 12-345 6789</a>
+    <p><strong>En. Arshad bin Mat Isa @ Ramli</strong><br>
+       <a href="https://wa.me/60123456789" target="_blank" style="color:white;">(Abah pengantin lelaki)</a>
     </p>
   </div>
 
   <div class="contact-card">
     <img src="images/wa_icon.png" alt="WhatsApp Icon">
-    <p><strong>Nik Muhammad Izzat</strong><br>
-       <a href="https://wa.me/60123456780" target="_blank">+60 12-345 6780</a>
+    <p><strong>Pn. Rohaya binti Ahmad Ramlly</strong><br>
+       <a href="https://wa.me/60122301385" target="_blank" style="color:white;">(Mama pengantin lelaki)</a>
     </p>
   </div>
 </section>
@@ -792,11 +824,11 @@ section {
     </p>
 
     <a href="https://wa.me/60123456789" target="_blank">
-      <button>Arshad bin Mat Isa (Ayah)</button>
+      <button>Arshad bin Mat Isa (Abah)</button>
     </a>
 
     <a href="https://wa.me/60123456780" target="_blank">
-      <button>Rohaya binti Ahmad Ramlly (Ibu)</button>
+      <button>Rohaya binti Ahmad Ramlly (Mama)</button>
     </a>
   </div>
 </div>
@@ -852,6 +884,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.querySelectorAll(".fade-in-section").forEach(el=>observer.observe(el));
 });
+
+
+
+// ===== CENTER FOCUS CAROUSEL =====
+const galleryImages = document.querySelectorAll(".photo-gallery img");
+let currentIndex = 0;
+
+// Function to update active image
+function updateCarousel() {
+  galleryImages.forEach((img, index) => {
+    img.classList.remove("active");
+  });
+
+  galleryImages[currentIndex].classList.add("active");
+}
+
+// Auto rotate every 3 seconds
+setInterval(() => {
+  currentIndex++;
+  if (currentIndex >= galleryImages.length) {
+    currentIndex = 0;
+  }
+  updateCarousel();
+}, 3000);
+
+// Initialize first image
+updateCarousel();
+
 
 
 // Bottom Nav
