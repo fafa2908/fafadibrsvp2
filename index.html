@@ -9,6 +9,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Birthstone&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tangerine:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Tangerine:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
 :root {
@@ -151,7 +153,8 @@ p { font-size:0.95rem; margin-bottom:10px; }
 }
 
 .hero-names h1 {
-  font-family:'Birthstone', cursive;
+  /*font-family:'Birthstone', cursive;*/
+  font-family:'Tangerine', cursive;
   font-size:4.5rem;
   line-height:0.95;
   margin:0;
@@ -618,7 +621,7 @@ section {
 
 <!-- BACKGROUND MUSIC -->
 <audio id="bgMusic" loop>
-  <source src="turning_page.mp3" type="audio/mpeg">
+  <source src="until_i_found_you.mp3" type="audio/mpeg">
 </audio>
 
 <!-- HERO -->
@@ -634,7 +637,7 @@ section {
     <div class="hero-names">
       <h1>Adib Aiman</h1>
       <div class="ampersand">&</div>
-      <h1>Nik Nurulfakhirah</h1>
+      <h1>NurulFakhirah</h1>
     </div>
   </div>
 
@@ -691,11 +694,18 @@ section {
 <!-- PHOTOS -->
 <section class="fade-in-section section-light">
   <div class="photo-gallery">
-    <img src="images/sec_pic.jpeg">
-    <img src="images/third_pic.jpg">
-    <img src="images/fourth_pic.jpg">
-    <img src="images/sec_pic.jpeg">
-    <img src="images/fourth_pic.jpg">
+    <img src="images/pic1.jpeg">
+    <img src="images/pic2.jpeg">
+    <img src="images/pic3.jpeg">
+    <img src="images/pic4.jpeg">
+    <img src="images/pic5.jpeg">
+    <img src="images/pic6.jpeg">
+    <img src="images/pic7.jpeg">
+
+    <!-- duplicates for smooth looping -->
+    <img src="images/pic1.jpeg">
+    <img src="images/pic2.jpeg">
+    <img src="images/pic3.jpeg">
   </div>
   
 
@@ -890,64 +900,38 @@ document.addEventListener("DOMContentLoaded", () => {
 // ===== CENTER FOCUS CAROUSEL =====
 const gallery = document.querySelector(".photo-gallery");
 const images = gallery.querySelectorAll("img");
+
 let currentIndex = 0;
-let isDragging = false;
-let startX;
-let scrollLeft;
+const originalCount = 7; // number of real images
 
-// Function to mark active image in center
-function updateActive() {
-  const galleryCenter = gallery.scrollLeft + gallery.offsetWidth / 2;
-  images.forEach(img => img.classList.remove("active"));
-  let closest = images[0];
-  let closestDistance = Math.abs((images[0].offsetLeft + images[0].offsetWidth/2) - galleryCenter);
+function scrollToImage(index){
+  const img = images[index];
+  const imgCenter = img.offsetLeft - (gallery.offsetWidth/2) + (img.offsetWidth/2);
 
-  images.forEach(img => {
-    const imgCenter = img.offsetLeft + img.offsetWidth/2;
-    const distance = Math.abs(imgCenter - galleryCenter);
-    if(distance < closestDistance){
-      closestDistance = distance;
-      closest = img;
-    }
+  gallery.scrollTo({
+    left: imgCenter,
+    behavior:"smooth"
   });
-  closest.classList.add("active");
 }
 
-// Auto-scroll every 3s
-setInterval(() => {
-  currentIndex = (currentIndex + 1) % images.length;
-  images[currentIndex].scrollIntoView({ behavior: 'smooth', inline: 'center' });
-}, 3000);
+setInterval(()=>{
 
-// Update active on scroll
-gallery.addEventListener("scroll", updateActive);
-updateActive();
+  currentIndex++;
 
-// Swipe/drag functionality for desktop & mobile
-gallery.addEventListener("mousedown", e => {
-  isDragging = true;
-  startX = e.pageX - gallery.offsetLeft;
-  scrollLeft = gallery.scrollLeft;
-  gallery.style.cursor = "grabbing";
-});
-gallery.addEventListener("mouseleave", () => { isDragging = false; gallery.style.cursor = "grab"; });
-gallery.addEventListener("mouseup", () => { isDragging = false; gallery.style.cursor = "grab"; });
-gallery.addEventListener("mousemove", e => {
-  if(!isDragging) return;
-  e.preventDefault();
-  const x = e.pageX - gallery.offsetLeft;
-  const walk = (startX - x) * 1.5; // scroll-fast
-  gallery.scrollLeft = scrollLeft + walk;
-});
+  scrollToImage(currentIndex);
 
-// Touch support
-gallery.addEventListener("touchstart", e => { startX = e.touches[0].pageX; scrollLeft = gallery.scrollLeft; });
-gallery.addEventListener("touchmove", e => {
-  const x = e.touches[0].pageX;
-  const walk = (startX - x) * 1.5;
-  gallery.scrollLeft = scrollLeft + walk;
-});
+  // when reaching duplicate images, reset silently
+  if(currentIndex === originalCount){
+    setTimeout(()=>{
+      gallery.scrollTo({
+        left: images[0].offsetLeft - (gallery.offsetWidth/2) + (images[0].offsetWidth/2),
+        behavior:"auto"
+      });
+      currentIndex = 0;
+    },600);
+  }
 
+},3000);
 
 
 // Bottom Nav
